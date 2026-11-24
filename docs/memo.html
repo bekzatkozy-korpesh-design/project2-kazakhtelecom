@@ -1,0 +1,41 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Memo: Kazakhtelecom 50–150 km belt</title>
+<style>
+@page { size: A4; margin: 10mm 12mm; }
+body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 9.1pt; color: #1b1b1b; line-height: 1.3; margin: 0; }
+h1 { font-size: 14.5pt; margin: 0 0 2px; }
+.sub { color: #555; font-size: 8.3pt; margin-bottom: 7px; }
+table.m { border-collapse: collapse; width: 100%; margin-bottom: 5px; }
+table.m td { border-top: 1px solid #ddd; padding: 3px 6px; vertical-align: top; }
+table.m td:first-child { width: 84px; font-weight: 700; color: #0b4f8a; }
+table.r { border-collapse: collapse; width: 100%; font-size: 7.9pt; margin: 3px 0 5px; }
+table.r th, table.r td { border: 1px solid #ccc; padding: 2px 5px; text-align: left; }
+table.r th { background: #f2f5f9; }
+img { width: 100%; margin: 0 0 2px; }
+.note { font-size: 7.8pt; color: #555; }
+b.ok { color: #0a7a3d; } b.no { color: #b54708; }
+</style></head><body>
+<h1>Kazakhtelecom: home internet breaks 50–150 km outside cities, not "in villages"</h1>
+<div class="sub">DA Project 2, Task 2 · Bekzat Kozy-Korpesh, group 05-P · November 2026 · real data: Ookla Speedtest Open Data, 88,242 map tiles, 855,745 speed tests (fixed and mobile), Q3 2025 and Q3 2026</div>
+
+<table class="m">
+<tr><td>Problem</td><td>Home internet in Kazakhstan is slow: the median fixed speed is 88 Mbps against a world median of 119 Mbps, and users filed 67,544 complaints in 2025. Kazakhtelecom (~66% of fixed broadband) is wiring 3,000+ villages by 2027. The question for that money is <i>which</i> villages and <i>which</i> fix.</td></tr>
+<tr><td>Bottleneck</td><td><b>The edge of the city fibre ring.</b> Villages within 50 km of a 100k+ city get a median of 94 Mbps. Just past 50 km speed falls to 23 Mbps, half of the tiles drop below 25 Mbps (copper/ADSL), and latency doubles from 15 to 35 ms. Remote villages (250+ km) are <i>better</i> (41 Mbps). So the constraint is not distance as such but the trunk line that stops at the suburban ring.</td></tr>
+<tr><td>H1</td><td>(4) Villages far from a city are slower than villages near one, so the trunk line (backhaul) is a constraint, not only the copper inside the village. (5) In villages, mobile 4G beats home internet more often than in cities, so 4G can replace fibre there.</td></tr>
+<tr><td>H0 (tested)</td><td>(4) Village fixed speed is the same near a city (≤ 50 km) and far (&gt; 150 km). (5) The share of places where mobile is faster than fixed is the same in cities and villages. Pairs 1–3 (city vs village gap, share under 25 Mbps, change over the year) were tested first; they confirm the problem.</td></tr>
+<tr><td>Result</td><td><b class="ok">H0-4 rejected</b> (p &lt; 0.001). Median 94 vs 35 Mbps, near vs far; the same cliff appears with 3+ tests per tile (141 vs 43) and in 2025 (64 vs 9). <b class="no">H0-5 rejected, but the effect is too small to act on</b> (p = 0.006): mobile wins on 45.6% of village places against 42.9% in cities. Overall, village home internet still beats mobile (median 46 vs 36 Mbps). <b>My idea that 4G can replace fibre in villages is not supported.</b> Pairs 1–3: all H0 rejected (city 157 vs village 43 Mbps; 8.5% vs 41.9% of tiles under 25 Mbps; village median 15 → 43 Mbps in a year).</td></tr>
+<tr><td>Advice</td><td><b>Identify:</b> the 4,840 village tiles 50–150 km from a city are the worst place in the network (51% under 25 Mbps). <b>Elevate:</b> extend trunk fibre outward from each regional city through this belt before wiring isolated remote villages: one trunk line serves many villages. Start with North Kazakhstan (75% of belt tiles slow), Akmola (63%) and Aktobe (61%). <b>Do not</b> swap the fibre plan for 4G: mobile is slower in most villages. Use 4G fixed-wireless only as a stopgap on copper lines below 25 Mbps. <b>Repeat:</b> re-run on each quarterly Ookla release; success means the 50–150 km bars rise to the 15–50 km level.</td></tr>
+</table>
+
+<img src="../charts_main.png" alt="Village speed by distance to city; share of places where mobile beats fixed">
+
+<table class="r">
+<tr><th>H0</th><th>Test</th><th>Numbers</th><th>p</th><th>Result</th></tr>
+<tr><td><b>4.</b> Village speed same ≤ 50 km and &gt; 150 km from a city</td><td>Welch t on log; Mann–Whitney; Spearman</td><td>median 94 vs 35 Mbps</td><td>&lt; 0.001</td><td>H0 rejected</td></tr>
+<tr><td><b>5.</b> Share where mobile beats fixed same in cities and villages</td><td>chi-square, 12,580 matched tiles</td><td>42.9% vs 45.6%</td><td>0.006</td><td>H0 rejected (tiny effect)</td></tr>
+<tr><td>1. Fixed speed same in cities and villages</td><td>Welch t on log; Mann–Whitney</td><td>157 vs 43 Mbps</td><td>&lt; 0.001</td><td>H0 rejected</td></tr>
+<tr><td>2. Share of tiles &lt; 25 Mbps same in cities and villages</td><td>chi-square</td><td>8.5% vs 41.9%</td><td>&lt; 0.001</td><td>H0 rejected</td></tr>
+<tr><td>3. Village speed same in Q3 2025 and Q3 2026</td><td>Welch t on log; paired t</td><td>15 → 43 Mbps</td><td>&lt; 0.001</td><td>H0 rejected</td></tr>
+</table>
+<div class="note"><b>Limits.</b> Ookla does not name the provider; the link to Kazakhtelecom rests on its ~66% fixed share. Speedtest users choose to test. Places with no fixed line leave no data. The 50 km and 150 km cut-offs were fixed before the analysis; the "cliff right after 50 km" shape is an observation, not a pre-registered test. That mobile wins on 84% of slow village lines is expected by construction: it happens on 90% of slow city lines too. All five pairs were written down before testing (hypotheses.md); pairs 4–5 were added after pairs 1–3 were found obvious, before mobile data was downloaded.</div>
+</body></html>

@@ -1,0 +1,6 @@
+step,rows_before,rows_after,why
+drop duplicate tiles,194851,194851,quadkey + quarter + network must be unique
+keep tiles inside Kazakhstan,194851,88242,"point-in-polygon on geoBoundaries ADM1 (16 regions, pre-2022 borders)"
+kbps -> Mbps,88242,88242,"speeds in Mbps, latency in ms"
+drop zero-speed tiles,88242,88242,0 tiles with 0 Mbps or 0 tests
+outlier check,88242,88242,"download 1%/50%/99%/max = {0.01: 0.8, 0.5: 68.9, 0.99: 519.7, 1.0: 1881.8}; latency > 1000 ms: 31. Kept; tests use log speed and medians"

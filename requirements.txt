@@ -1,0 +1,9 @@
+pandas
+numpy
+scipy
+matplotlib
+pyarrow
+shapely>=2
+nbformat
+nbclient
+ipykernel

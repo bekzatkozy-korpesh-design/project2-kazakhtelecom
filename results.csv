@@ -1,0 +1,6 @@
+H0,test,numbers,p,result
+H0-1 download speed same in cities and villages (2026Q3),Welch t on log + Mann-Whitney,median 157 vs 43 Mbps,0.0,H0 rejected
+H0-2 share of tiles < 25 Mbps same in cities and villages,chi-square,8.5% vs 41.9%,0.0,H0 rejected
+H0-3 village speed same in 2025Q3 and 2026Q3,Welch t on log,median 15 -> 43 Mbps,6.768413476894889e-137,H0 rejected
+H0-4 village speed same near (<=50 km) and far (>150 km) from a city,Welch t on log + Mann-Whitney,median 94 vs 35 Mbps,2.6530071898185492e-73,H0 rejected
+H0-5 share where mobile beats fixed same in cities and villages,chi-square,42.9% vs 45.6%,0.005863179911528792,H0 rejected
